@@ -13,7 +13,7 @@ jobs:
 
       - name: Find and extract project
         run: |
-          unzip -q ZZZLauncher_Android_Project.zip -d project
+          unzip -q ZZZLauncher_UI_v1_1_Full_Build.zip -d project
           cp -r project/ZZZLauncher/. ./ 2>/dev/null || cp -r project/. ./
           rm -rf project
 
@@ -30,8 +30,6 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v4
-        with:
-          packages: ''
 
       - name: Install Android SDK packages
         run: |

@@ -12,37 +12,21 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Find and extract project
+        shell: bash
         run: |
-          unzip -q ZZZLauncher_UI_v1_1_Full_Build.zip -d project
-          cp -r project/ZZZLauncher/. ./ 2>/dev/null || cp -r project/. ./
-          rm -rf project
+          set -e
 
-      - name: Set up Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '17'
+          echo "=== ZIP files in repository ==="
+          find . -maxdepth 2 -type f -iname "*.zip" -print
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.11.1'
+          ZIP=$(find . -maxdepth 2 -type f -name 'ZZZLauncher_UI_v1_1_Full_Build.zip' | head -n 1)
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v4
+          if [ -z "$ZIP" ]; then
+            echo "ERROR: ZZZLauncher_UI_v1_1_Full_Build.zip was not found."
+            echo "Please upload ZZZLauncher_UI_v1_1_Full_Build.zip to the repository root."
+            exit 1
+          fi
 
-      - name: Install Android SDK packages
-        run: |
-          sdkmanager --install \
-            "platform-tools" \
-            "platforms;android-36" \
-            "build-tools;35.0.0"
+          echo "Using: $ZIP"
 
-      - name: Build APK
-        run: gradle :app:assembleDebug --no-daemon
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: ZZZLauncher
-          path: app/build/outputs/apk/debug/app-debug.apk
+          mkdir -

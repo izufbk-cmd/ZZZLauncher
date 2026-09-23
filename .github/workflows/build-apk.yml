@@ -13,7 +13,7 @@ jobs:
 
       - name: Find and extract project
         run: |
-          unzip -q ZZZLauncher_Smartphone_Build.zip -d project
+          unzip -q ZZZLauncher_Android_Project.zip -d project
           cp -r project/ZZZLauncher/. ./ 2>/dev/null || cp -r project/. ./
           rm -rf project
 
